@@ -27,16 +27,19 @@ public class SecurityConfig {
         return customUserDetailsService;
     }
 
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.hospital.gateway.filter.AuthenticationFilter authenticationFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .cors(org.springframework.security.config.Customizer.withDefaults()) // Use the CorsFilter bean
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
                         .anyRequest().permitAll())
+                .addFilterBefore(authenticationFilter,
+                        org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
