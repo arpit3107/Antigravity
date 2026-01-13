@@ -28,7 +28,15 @@ public class SecurityConfig {
     }
 
     @org.springframework.beans.factory.annotation.Autowired
-    private com.hospital.gateway.filter.AuthenticationFilter authenticationFilter;
+    private com.hospital.gateway.filter.RouteValidator routeValidator;
+
+    @org.springframework.beans.factory.annotation.Autowired
+    private com.hospital.gateway.service.JwtService jwtService;
+
+    @Bean
+    public com.hospital.gateway.filter.AuthenticationFilter authenticationFilter() {
+        return new com.hospital.gateway.filter.AuthenticationFilter(routeValidator, jwtService);
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,7 +44,7 @@ public class SecurityConfig {
                 .cors(org.springframework.security.config.Customizer.withDefaults()) // Use the CorsFilter bean
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/auth/**").permitAll()
                         .anyRequest().permitAll())
-                .addFilterBefore(authenticationFilter,
+                .addFilterBefore(authenticationFilter(),
                         org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

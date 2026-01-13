@@ -6,7 +6,7 @@ spring:
     name: api-gateway
   
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysqldb:3306/auth_db}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307/auth_db}
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -26,28 +26,28 @@ spring:
       mvc:
         routes:
           - id: doctor-service
-            uri: http://doctor-service:8081
+            uri: http://localhost:8081
             predicates:
               - Path=/api/doctors/**
             filters:
               - StripPrefix=1
               
           - id: patient-service
-            uri: http://patient-service:8082
+            uri: http://localhost:8082
             predicates:
               - Path=/api/patients/**
             filters:
               - StripPrefix=1
 
           - id: appointment-service
-            uri: http://appointment-service:8083
+            uri: http://localhost:8083
             predicates:
               - Path=/api/appointments/**
             filters:
               - StripPrefix=1
 
           - id: billing-service
-            uri: http://billing-service:8084
+            uri: http://localhost:8084
             predicates:
               - Path=/api/bills/**
             filters:
