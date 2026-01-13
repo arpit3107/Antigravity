@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin("*")
+
 @RequestMapping("/bills")
 public class BillController {
 
@@ -24,7 +24,7 @@ public class BillController {
     public List<Bill> findAllBills() {
         return service.getBills();
     }
-    
+
     @GetMapping("/{id}")
     public Bill findBillById(@PathVariable Long id) {
         return service.getBillById(id);

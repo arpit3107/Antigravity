@@ -1,0 +1,56 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysqldb:3306/auth_db}
+    username: ${SPRING_DATASOURCE_USERNAME:root}
+    password: ${SPRING_DATASOURCE_PASSWORD:password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  
+
+
+  cloud:
+    gateway:
+      mvc:
+        routes:
+          - id: doctor-service
+            uri: http://doctor-service:8081
+            predicates:
+              - Path=/api/doctors/**
+            filters:
+              - StripPrefix=1
+              
+          - id: patient-service
+            uri: http://patient-service:8082
+            predicates:
+              - Path=/api/patients/**
+            filters:
+              - StripPrefix=1
+
+          - id: appointment-service
+            uri: http://appointment-service:8083
+            predicates:
+              - Path=/api/appointments/**
+            filters:
+              - StripPrefix=1
+
+          - id: billing-service
+            uri: http://billing-service:8084
+            predicates:
+              - Path=/api/bills/**
+            filters:
+              - StripPrefix=1
+
+
