@@ -26,6 +26,14 @@ services:
     networks:
       - hospital-net
 
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - hospital-net
+
 networks:
   hospital-net:
     driver: bridge
